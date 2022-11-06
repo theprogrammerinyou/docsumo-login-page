@@ -9,15 +9,24 @@ function Login() {
   const { setIsLoggedIn } = useAuth();
   const { setUserData } = useUserData();
   const [error, setError] = useState("");
+  const [userInputValues, setUserInputValues] = useState({
+    email: "",
+    password: ""
+  });
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const userDetails = {
-      email: "frontend@docsumo.com",
-      password: "76tA2RFJFq6vVhyE",
-    };
-    const userData = await login(userDetails);
+    const { email, password } = userInputValues;
+    if (!email || !email.includes("@")) {
+      setError("Please enter a valid email");
+      return;
+    }
+    if (!password) {
+      setError("Please enter your password");
+      return;
+    }
+    const userData = await login({email, password});
     try {
       if (userData?.token) {
         setUserData(userData);
@@ -37,6 +46,15 @@ function Login() {
     setShowPassword(!showPassword);
   }
   
+  const handleInputChange = (e, inputType) => {
+    if (inputType === "email") {
+      setUserInputValues({...userInputValues, email: e.target.value})
+    }
+    if (inputType === "password") {
+      setUserInputValues({...userInputValues, password: e.target.value})
+    }
+  }
+  
   return (
     <div className="container">
       <div className="header">
@@ -50,25 +68,26 @@ function Login() {
       <div className="login-container">
         <h1 className="title">Login to your Docsumo account</h1>
         {error && <p className="error">{error}</p>}
-        <div className="no-div hidden" />
         <div className="form-container">
           <form onSubmit={handleLogin}>
             <div className="email-container">
-              <label htmlFor="email-input">Work Email</label>
+              <label htmlFor="email-input" className="label">Work Email</label>
               <div className="email-input-container">
                 <input
                   id="email-input"
                   type="email"
+                  onChange={(e) => handleInputChange(e, "email")}
                   placeholder="johndoe@abc.com"
                 />
               </div>
             </div>
             <div className="password-container">
               <div>
-                <label htmlFor="password-input">Password</label>
+                <label htmlFor="password-input" className="label">Password</label>
                 <div className="password-input-container">
                   <input
                     id="password-input"
+                    onChange={(e) => handleInputChange(e, "password")}
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter password here..."
                   />
