@@ -36,9 +36,7 @@ function Login() {
   const handleShowPasswordToggle = () => {
     setShowPassword(!showPassword);
   }
-
-  console.log(error)
-
+  
   return (
     <div className="container">
       <div className="header">
