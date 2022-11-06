@@ -10,7 +10,6 @@ export function login(userDetails) {
                 resolve(response.data.data)
             }
         }).catch(error => {
-            console.log('error', error);
             reject(new Error(error));
         })
     })
