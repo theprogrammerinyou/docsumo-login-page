@@ -76,6 +76,7 @@ function Login() {
                 <input
                   id="email-input"
                   type="email"
+                  autoComplete="off"
                   onChange={(e) => handleInputChange(e, "email")}
                   placeholder="johndoe@abc.com"
                 />
